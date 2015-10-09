@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+	
+	<head>
+		<script src="lib/jquery-1.11.3.min.js"></script>
+		<script src="lib/underscore-min.js"></script>
+		<script src="lib/d3.min.js"></script>
+		<script src="lib/jquery.dform-1.1.0.min.js"></script>
+
+		<script src="scr/BallsNSprings.js"></script>		
+		<script src="scr/Ball.js"></script>
+		<script src="scr/Spring.js"></script>
+		<script src="scr/utils.js"></script>
+		<script src="scr/Initialise.js"></script>
+		<script src="scr/Integrators.js"></script>
+		<script src="scr/SpringTypes.js"></script>
+		<script src="scr/State.js"></script>
+		<script src="scr/Step.js"></script>
+		<script src="scr/Vector.js"></script>
+		<script src="scr/FormDefinitions.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	
+	<body>
+		<div id="testElement">
+			<svg id = "svgElement", width="900" height="500"></svg>
+		</div>
+		
+		<button name="Run" onclick="Run()">Run</button>
+		<button name="Pause" onclick="Pause()">Pause</button>
+		<button name="button" onclick="Restart()">Restart</button>
+		
+
+	</body>
+</html>
+
+<script>
+	var svg = document.getElementById("svgElement");
+	var bNs = new BallsNSprings(svg);
+
+	BallsNSprings.Examples.RandomMinConnect(bNs, 10);
+
+	function Run(){
+		bNs.Run();
+	}
+	
+	function Pause(){
+		bNs.Pause();
+	}
+	
+	function Restart(){
+		bNs.Remove();
+		BallsNSprings.Examples.RandomMinConnect(bNs, 15);
+	}
+</script>
