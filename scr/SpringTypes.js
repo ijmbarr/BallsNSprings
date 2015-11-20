@@ -16,11 +16,14 @@ BallsNSprings.SpringTypes = {
 			var delta = ball1.State.pos.add(ball2.State.pos.multiply(-1));
 			var distance = delta.length();
 			
-			return delta.multiply(- k * (distance / d0 - 1));
+			return delta.multiply(- k * (1 - d0/distance));
 		}
 		
 		this.energy = function(ball1, ball2){
-			return 0;
+			var delta = ball1.State.pos.add(ball2.State.pos.multiply(-1));
+			var distance = delta.length();
+			
+			return 0.5 * k * Math.pow((distance - d0),2);
 		}
 		
 		return this;

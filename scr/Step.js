@@ -9,12 +9,22 @@ BallsNSprings.prototype.Step = function(bNs){
 			bNs.parameters.steptime
 			);
 		
+		//Tick
 		if(bNs.Running && bNs.dt >= bNs.parameters.steptime){
 			bNs.parameters.integrator(bNs, bNs.dt);
+			
 			bNs.Draw();
+			
+			bNs.UpdateEnergy();
+			
+			for(var i = 0; i < bNs.thingsToTick.length; i++){
+				var toTick = bNs.thingsToTick[i];
+				toTick.tick();
+			}
+			
 			bNs.dt -= bNs.parameters.steptime;
 		}
-		
+
 		window.requestAnimationFrame(BallsNSprings.prototype.Step(bNs));
 	}
 }

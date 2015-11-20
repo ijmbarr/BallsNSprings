@@ -97,6 +97,48 @@ BallsNSprings.Examples = {
 		bNs.Draw();
 	},
 	
+	OneBall : function(bNs){
+		
+		bNs.Balls = [
+			new BallsNSprings.Ball(
+				bNs, 
+				new BallsNSprings.State(
+					new Vector(bNs.width * 0.25, bNs.height * 0.5),
+					new Vector(0,0),
+					new Vector(0,0)
+				),
+				{
+					colour : "blue",
+					ball_damping : 0
+				}
+			),
+			new BallsNSprings.Ball(
+				bNs, 
+				new BallsNSprings.State(
+					new Vector(bNs.width * 0.5, bNs.height * 0.5),
+					new Vector(0,0),
+					new Vector(0,0)
+				),
+				{
+					ball_colour : "black",
+					ball_inversemass : 0.0
+				}
+			)
+		];
+		
+				
+		bNs.Springs = [
+			 new BallsNSprings.Spring(
+						bNs,
+						bNs.Balls[0], 
+						bNs.Balls[1], 
+						{spring_type : new BallsNSprings.SpringTypes.Harmonic(1, 0)}
+					)
+		];
+				
+		bNs.Draw();
+	},
+	
 	NoSprings : function(bNs, N){
 		//Just N Balls, No Springs
 		bNs.Balls = _.range(N)

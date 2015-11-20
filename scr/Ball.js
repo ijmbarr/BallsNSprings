@@ -41,7 +41,11 @@ BallsNSprings.Ball.prototype.draw = function(){
 }
 
 BallsNSprings.Ball.prototype.energy = function(){
-	return 0;
+	if(this.parameters.ball_inversemass <= 0){
+		return 0;
+	}
+	
+	return 0.5 * Math.pow(this.State.vel.length(),2) / this.parameters.ball_inversemass;
 }
 
 BallsNSprings.Ball.prototype.acceleration = function(){
@@ -60,52 +64,38 @@ BallsNSprings.Ball.prototype.acceleration = function(){
 			.multiply(this.parameters.ball_inversemass);
 	}
 	
-	//Collsions with boundaries
-	acceleration = acceleration.add(this.boundary());
-	
 	//Return
 	return acceleration;
 }
 
-BallsNSprings.Ball.prototype.boundary = function(){
-	//Returns an acceleration based on collisions with the 
-	//boundaries. 
+BallsNSprings.Ball.prototype.CorrectForBoundary = function(){
+	//When there is a collision with a boundary, assume a reflection.
+	//Correct the current state to the new position.
 	
 	var boundary = {
 		xmin : 0,
 		ymin : 0,
 		xmax : this.bNs.width,
 		ymax : this.bNs.height
-		},
-		acceleration = new Vector(0,0);
+		};
 	
 	if (this.State.pos.x <= boundary.xmin){
-		//Check that the ball isn't already moving away from the wall
-		if(this.State.vel.x <= 0){ 
-			acceleration = acceleration.addX(- 2.0 * this.State.vel.x / bNs.parameters.steptime);
-		}		
+		this.State.pos.x = 2 * boundary.xmin - this.State.pos.x;
+		this.State.vel.x = -this.State.vel.x;	
 	}
 	
 	if (this.State.pos.x >= boundary.xmax){
-		//Check that the ball isn't already moving away from the wall
-		if(this.State.vel.x >= 0){ 
-			acceleration = acceleration.addX(- 2.0 * this.State.vel.x / bNs.parameters.steptime);
-		}		
+		this.State.pos.x = 2 * boundary.xmax - this.State.pos.x;
+		this.State.vel.x = -this.State.vel.x;		
 	}
 	
 	if (this.State.pos.y <= boundary.ymin){
-		//Check that the ball isn't already moving away from the wall
-		if(this.State.vel.y <= 0){ 
-			acceleration = acceleration.addY(- 2.0 * this.State.vel.y / bNs.parameters.steptime);
-		}		
+		this.State.pos.y = 2 * boundary.ymin - this.State.pos.y;
+		this.State.vel.y = -this.State.vel.y;		
 	}
 	
 	if (this.State.pos.y >= boundary.ymax){
-		//Check that the ball isn't already moving away from the wall
-		if(this.State.vel.y >= 0){ 
-			acceleration = acceleration.addY(- 2.0 * this.State.vel.y / bNs.parameters.steptime);
-		}		
+		this.State.pos.y = 2 * boundary.ymax - this.State.pos.y;
+		this.State.vel.y = -this.State.vel.y;		
 	}
-	
-	return acceleration;
 }

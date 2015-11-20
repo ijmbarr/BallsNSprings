@@ -11,13 +11,23 @@ var BallsNSprings = function(svgElement, initialParameters){
 	this.Balls = [];
 	this.Springs = [];
 	
+	//Things to tick
+	this.thingsToTick = [];
+	
 	//Default Parameteres
 	this.parameters = {
-		integrator : BallsNSprings.Integrators.Euler,
+		integrator : BallsNSprings.Integrators.Verlet,
 		steptime : 0.05
 	}
 	
 	MergeIntoFirst(this.parameters, initialParameters || {});
+	
+	//Diagnostics
+	this.energy = {
+		ke : 0,
+		pe: 0,
+		total : 0
+	};
 	
 	//Running
 	this.Running = false;
@@ -64,4 +74,15 @@ BallsNSprings.prototype.Remove = function(){
 		
 		ball.remove();
 	}
+}
+
+//Update diagnostics
+BallsNSprings.prototype.UpdateEnergy = function(){
+	this.energy.ke = _.map(this.Balls, function(b){return b.energy();})
+									.reduce(function(c,p){return c + p;}, 0);
+									
+	this.energy.pe = _.map(this.Springs, function(b){return b.energy();})
+									.reduce(function(c,p){return c + p;}, 0);
+									
+	this.energy.total = this.energy.ke + this.energy.pe;
 }

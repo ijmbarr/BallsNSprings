@@ -26,6 +26,12 @@ BallsNSprings.Integrators = {
 		
 		for(var i = 0; i < bNs.Balls.length; i++){
 			var ball = bNs.Balls[i];
+			//Take into account boundary conditions
+			ball.State.acc = ball.CorrectForBoundary();
+		}
+		
+		for(var i = 0; i < bNs.Balls.length; i++){
+			var ball = bNs.Balls[i];
 			
 			//Once all the balls are in their new position, update
 			//the acceleration for the system.
@@ -54,6 +60,12 @@ BallsNSprings.Integrators = {
 				ball.OldState.vel,
 				ball.OldState.acc
 			);	
+		}
+		
+		for(var i = 0; i < bNs.Balls.length; i++){
+			var ball = bNs.Balls[i];
+			//Take into account boundary conditions
+			ball.State.acc = ball.CorrectForBoundary();
 		}
 		
 		for(var i = 0; i < bNs.Balls.length; i++){

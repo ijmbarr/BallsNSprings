@@ -12,7 +12,7 @@ BallsNSprings.Spring = function(bNs, ball1, ball2, initialParameters){
 		spring_colour : "black",
 		spring_width : 2,
 		spring_visible : true,
-		spring_type : BallsNSprings.SpringTypes.Harmonic(1, 100)
+		spring_type : new BallsNSprings.SpringTypes.Harmonic(1, 100)
 	}
 	
 	MergeIntoFirst(this.parameters, initialParameters);
@@ -35,6 +35,10 @@ BallsNSprings.Spring.prototype.draw = function(){
 
 BallsNSprings.Spring.prototype.remove = function(){
 	this.svgElement.remove();
+}
+
+BallsNSprings.Spring.prototype.energy = function(){
+	return this.parameters.spring_type.energy(this.ball1, this.ball2);
 }
 
 BallsNSprings.Spring.prototype.force = function(ball){

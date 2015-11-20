@@ -19,6 +19,7 @@
 		<script src="scr/Step.js"></script>
 		<script src="scr/Vector.js"></script>
 		<script src="scr/FormDefinitions.js"></script>
+		<script src="scr/DiagnosticGraphs.js"></script>
 		
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
@@ -26,11 +27,15 @@
 	<body>
 		<div id="testElement">
 			<svg id = "svgElement", width="900" height="500"></svg>
+			</br>
+			<svg id = "energyGraph", width="900" height="120"></svg>
 		</div>
 		
 		<button name="Run" onclick="Run()">Run</button>
 		<button name="Pause" onclick="Pause()">Pause</button>
 		<button name="button" onclick="Restart()">Restart</button>
+		
+		<div id = "myform"></div>
 		
 
 	</body>
@@ -39,8 +44,12 @@
 <script>
 	var svg = document.getElementById("svgElement");
 	var bNs = new BallsNSprings(svg);
+	
+	var EGsvg = document.getElementById("energyGraph");
+	var EnergyGraph = new BallsNSprings.EnergyGraph(bNs, EGsvg);
 
-	BallsNSprings.Examples.RandomMinConnect(bNs, 10);
+	BallsNSprings.Examples.OneBall(bNs, 10);
+	
 
 	function Run(){
 		bNs.Run();
@@ -54,4 +63,9 @@
 		bNs.Remove();
 		BallsNSprings.Examples.RandomMinConnect(bNs, 15);
 	}
+	
+	$("#myform").dform({
+		"action" : function(a){console.log(a);},
+		"html" : MainForm
+	});
 </script>
